@@ -1,0 +1,29 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: nginx-alert-rules
+  namespace: monitoring
+  labels:
+    role: alert-rules
+    app.kubernetes.io/name: kube-prometheus
+    app.kubernetes.io/part-of: kube-prometheus    
+spec:
+  groups:
+  - name: nginx-prometheus-rules
+    rules:
+    - alert: NginxDown
+      expr: nginx_up == 0
+      for: 5m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Nginx instance is down"
+        description: "Nginx instance has been down for more than 5 minutes."
+    # - alert: HighNginxResponseTime
+    #   expr: histogram_quantile(0.9, sum(rate(nginx_http_request_duration_seconds_bucket[5m])) by (le)) > 0.5
+    #   for: 10m
+    #   labels:
+    #     severity: warning
+    #   annotations:
+    #     summary: "High Nginx response time"
+    #     description: "The 90th percentile of Nginx response time is above 0.5 seconds for more than 10 minutes."

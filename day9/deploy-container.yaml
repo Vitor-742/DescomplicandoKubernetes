@@ -1,6 +1,8 @@
 apiVersion: apps/v1 
 kind: Deployment
 metadata:
+  labels:
+    app: giropops-senhas
   name: giropops-senhas
 spec:
   replicas: 2
@@ -15,6 +17,9 @@ spec:
       containers:
       - name: giropops-senhas
         image: linuxtips/giropops-senhas:1.0
+        env:
+        - name: REDIS_HOST
+          value: redis-service
         ports:
-        - containerPort: 50000
+        - containerPort: 5000
         imagePullPolicy: Always

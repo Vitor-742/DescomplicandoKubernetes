@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: giropops-senhas-ingress
+  annotations:
+    # nginx.ingress.kubernetes.io/rewrite-target: /
+    #cert-manager.io/cluster-issuer: "letsencrypt-tests"
+    nginx.ingress.kubernetes.io/limit-rps: "2"
+spec:
+  # tls:
+  # - hosts:
+  #   - giropops.example.com
+  #   secretName: giropops-senhas-tls
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: giropops-senhas-service
+            port:
+              number: 5000

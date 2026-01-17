@@ -1,2 +1,29 @@
-exemplo
-
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+  labels:
+    app: my-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: my-app # -> todos os pods que tem essa label o deployent vai cuidar replicas
+# daq pra cima é config do deployment / para baixo sao os pods
+  template:
+    metadata:
+      labels:
+        app: my-app # -> label dos pods criados por esse deployment
+    spec:
+      containers:
+        - name: my-app
+          image: nginx:latest
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "0.3"
+            limits:
+              memory: "128Mi"
+              cpu: "0.5"
+          ports:
+            - containerPort: 80

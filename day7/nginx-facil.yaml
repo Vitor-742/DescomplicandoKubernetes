@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: my-test
+  name: my-test
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: my-test
+  strategy: 
+    type: RollingUpdate
+    rollingUpdate: 
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: my-test
+    spec:
+      containers:
+      - image: nginx:latest
+        name: nginx
+        resources: {
+          limits: {
+            cpu: "0.5",
+            memory: "128Mi"
+          }
+        }
+        ports: [
+          {
+            containerPort: 80,
+            protocol: "TCP"
+          }
+        ]
